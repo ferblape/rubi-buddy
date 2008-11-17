@@ -87,17 +87,24 @@ puts "Enviando datos"
 ibuddy.open do |h|
   
   # puts "corazon:"
-  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
-  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << (RESET ^ 0x80)).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup + [(RESET ^ 0x80)]).to_string, 0)
+
+  sleep 1
+  
   puts "reset:"
   h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << RESET).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup + [RESET]).to_string, 0)
+
+  sleep 1 
 
   puts "cabeza roja:"
   h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << color(1,0,0)).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup + [color(1,0,0)]).to_string, 0)
+
+  sleep 1
 
   puts "reset:"
   h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << RESET).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup + [RESET]).to_string, 0)
 end
