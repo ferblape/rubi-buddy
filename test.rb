@@ -49,9 +49,6 @@ else
   puts "Conectando a iBuddy"
 end
 
-USB_RT_PORT = USB::USB_TYPE_CLASS | USB::USB_RECIP_OTHER
-USB_PORT_FEAT_POWER = 8
-
 # envío de un paquete
 # 
 # SETUP   = (0x22, 0x09, 0x00, 0x02, 0x01, 0x00, 0x00, 0x00)
@@ -62,8 +59,8 @@ USB_PORT_FEAT_POWER = 8
 # 
 SETUP   = [0x22, 0x09, 0x00, 0x02, 0x01, 0x00, 0x00, 0x00]
 MESS    = [0x55, 0x53, 0x42, 0x43, 0x00, 0x40, 0x02]
-RESET   = 0xFF
-# 
+RESET   = [0xFF]
+
 # message = MESS << (0xFF ^ 4)
 
 # i = num
@@ -86,23 +83,10 @@ RESET   = 0xFF
 puts "Enviando datos"
 ibuddy.open do |h|
   puts 'SETUP:'
-  # SETUP.each do |v|
-  #   h.usb_control_msg(0x21, 0x09, 0x02, 0x01, v[0].chr, 0)
-  #   putc '.'
-  # end
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, RESET.to_string, 0)
   h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
   puts "\nMESS:"
   h.usb_control_msg(0x21, 0x09, 0x02, 0x01, MESS.to_string, 0)
-  # h.usb_control_msg(0x21, 0x09, SETUP, 0x02, 0x01)
-  # h.usb_control_msg(0x21, 0x09, message, 0x02, 0x01)
-  puts "\nFinalizando"
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, RESET.to_string, 0)
 
-  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, RESET.to_string, 0)
-  h.reset
-  
 end
-
-
-# Scan the usb busses for something with vendorid=0×1130 and prodid=0×0002 - thats the ibuddy
-
-# #<USB::Device 007/005-1130-0002-00-00 1130:0002 i-Buddy ? (HID (00,00), HID (00,00))>
