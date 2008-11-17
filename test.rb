@@ -16,20 +16,15 @@ class Array
       br << (i&0xFF)
     end
     br
-    # br.reverse!
   end
   
 end 
  
-# dev = USB.find_bus(4).find_device(1)
-
 bus = nil
 device = nil
 
 USB.devices.each do |dev|
  begin
-   # puts ("%04x:%04x" % [dev.idVendor, dev.idProduct])
-   # puts dev.inspect
    if '1130' == ("%04x" % dev.idVendor) &&
       '0002' == ("%04x" % dev.idProduct)
       bus = dev.bus.dirname
@@ -59,34 +54,50 @@ end
 # 
 SETUP   = [0x22, 0x09, 0x00, 0x02, 0x01, 0x00, 0x00, 0x00]
 MESS    = [0x55, 0x53, 0x42, 0x43, 0x00, 0x40, 0x02]
-RESET   = [0xFF]
+RESET   = 0xFF
 
-# message = MESS << (0xFF ^ 4)
+def color(red, green, blue)
+  res = 0xFF
+  re = red << 4
+  gr = green << 5
+  bl = blue << 6
+  res ^ (re | gr | bl)
+end
 
-# i = num
-# br=''
-# 4.times{
-# br << (i&0xFF)
-# i >>= 8
-# }
-# br.reverse!
-
-# Python
-# 
-# def controlMsg               (requestType, request, buffer, value = 0, index = 0, timeout = 100)
-
-# Ruby
-#
-# USB::DevHandle#usb_control_msg(requesttype, request, value, index, bytes, timeout)
-# h.usb_control_msg(USB_RT_PORT, USB::USB_REQ_SET_FEATURE, USB_PORT_FEAT_POWER, port, "", 0)
+# 00000000
+# 1000 0000
+# 0000 0 
+# 0001 1
+# 0010 2
+# 0011 3
+# 0100 4
+# 0101 5
+# 0110 6
+# 0111 7
+# 1000 8
+# 1001 9
+# 1010 10 - A
+# 1011 11 - B
+# 1100 12 - C
+# 1101 13 - D
+# 1110 14 - E
+# 1111 15 - F
 
 puts "Enviando datos"
 ibuddy.open do |h|
-  puts 'SETUP:'
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, RESET.to_string, 0)
+  
+  # puts "corazon:"
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << (RESET ^ 0x80)).to_string, 0)
+  puts "reset:"
   h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
-  puts "\nMESS:"
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, MESS.to_string, 0)
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, RESET.to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << RESET).to_string, 0)
 
+  puts "cabeza roja:"
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << color(1,0,0)).to_string, 0)
+
+  puts "reset:"
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS << RESET).to_string, 0)
 end
