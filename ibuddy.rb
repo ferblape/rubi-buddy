@@ -43,20 +43,20 @@ class IBuddy
   end
   
   def message_base
-    MESSAGE
+    MESSAGE.dup
   end
   
-  def reset
+  def reset_message
     RESET
   end
   
   def send(inc)
     @h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
-    @h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESSAGE << inc).to_string, 0)
+    @h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (message_base << inc).to_string, 0)
   end
   
   def activate_hearth
-    send(reset ^ 0x80)
+    send(reset_message ^ 0x80)
   end
   
   def reset
@@ -67,6 +67,6 @@ end
 
 ibuddy = IBuddy.new
 ibuddy.reset
-ibuddy.activate_hearth
+# ibuddy.activate_hearth
 # sleep 2
 # ibuddy.reset
