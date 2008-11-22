@@ -1,5 +1,4 @@
 require 'usb'
-require 'pp'
  
 class Array
   
