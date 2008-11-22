@@ -69,7 +69,8 @@ class IBuddy
     send(RESET)
   rescue
   end
-  
+
+  # TODO  
   def flap(times = 2)    
     bits = [0x08, 0x04]
     1.upto(times) do |i|
@@ -88,14 +89,7 @@ class IBuddy
       send(RESET ^ 0x02)
     end
     sleep 1
+  rescue
   end
   
 end
-
-i = IBuddy.new
-i.turn(1)
-sleep 1
-i.turn(0)
-sleep 1
-i.activate_hearth
-# i.color(1,0,0)
