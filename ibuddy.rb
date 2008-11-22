@@ -40,33 +40,62 @@ class IBuddy
       USB.find_bus(bus.to_i).find_device(device.to_i)
     end
     @h = dev.usb_open
+    self.reset
   end
   
   def message_base
     MESSAGE.dup
   end
   
-  def reset_message
-    RESET
-  end
-  
   def send(inc)
-    @h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
     @h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (message_base << inc).to_string, 0)
   end
   
   def activate_hearth
-    send(reset_message ^ 0x80)
+    send(RESET ^ 0x80)
+  rescue
+  end
+  
+  def color(red, green, blue)
+    r = red << 4
+    g = green << 5
+    b = blue << 6
+    send(RESET ^ (r | g | b))
+  rescue
   end
   
   def reset
-    send(0xFF)
+    @h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
+    send(RESET)
+  rescue
+  end
+  
+  def flap(times = 2)    
+    bits = [0x08, 0x04]
+    1.upto(times) do |i|
+      index  = i%2
+      send(0xFF ^ (bits[1]))
+    end
+    # send(RESET ^ (bits[0] | bits[1]))
+    # send(RESET ^ (bits[1] | bits[0]))
+  end
+  
+  def turn(direction)
+    # left
+    if direction == 0 
+      send(RESET ^ 0x01)
+    elsif direction == 1
+      send(RESET ^ 0x02)
+    end
+    sleep 1
   end
   
 end
 
-ibuddy = IBuddy.new
-ibuddy.reset
-# ibuddy.activate_hearth
-# sleep 2
-# ibuddy.reset
+i = IBuddy.new
+i.turn(1)
+sleep 1
+i.turn(0)
+sleep 1
+i.activate_hearth
+# i.color(1,0,0)

@@ -64,6 +64,7 @@ def color(red, green, blue)
   res ^ (re | gr | bl)
 end
 
+# XBGRUDLR
 # 00000000
 # 1000 0000
 # 0000 0 
@@ -86,29 +87,45 @@ end
 puts "Enviando datos"
 ibuddy.open do |h|
   
-  # puts "reset:"
-  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
-  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << RESET).to_string, 0)
-  # 
-  # puts "corazon:"
-  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
+  puts "reset:"
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << RESET).to_string, 0)
+
   # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x80)).to_string, 0)
-  # 
+  
   # sleep 1
   
-  puts "reset:"
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 10)
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << RESET).to_string, 10)
+  # puts "reset:"
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 10)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << RESET).to_string, 10)
+  # 
+  # sleep 1 
+  # 
+  # puts "cabeza roja:"
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 10)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << color(0,1,0)).to_string, 10)
+  # 
+  # sleep 1
+  # 
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << color(0,0,1)).to_string, 10)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << color(0,1,1)).to_string, 10)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << color(1,1,1)).to_string, 10)
+  # puts "reset:"
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 10)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << RESET ).to_string, 10)
+  
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x01)).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x00)).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x02)).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x02)).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x01)).to_string, 0)
+  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x00)).to_string, 0)
 
-  sleep 1 
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x04)).to_string, 0)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x08)).to_string, 0)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x04)).to_string, 0)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x08)).to_string, 0)
+  # h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << (RESET ^ 0x04)).to_string, 0)
 
-  puts "cabeza roja:"
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 10)
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << color(1,1,1)).to_string, 10)
-
-  sleep 1
-
-  puts "reset:"
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, SETUP.to_string, 10)
-  h.usb_control_msg(0x21, 0x09, 0x02, 0x01, (MESS.dup << RESET ).to_string, 10)
+  
 end
