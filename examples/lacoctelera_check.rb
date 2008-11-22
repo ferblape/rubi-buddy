@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'curb'
-require 'ibuddy'
+require 'rubi-buddy'
 
-i = IBuddy.new
+i = RubiBuddy.new
 
 while true
 
