@@ -1,3 +1,5 @@
+# Random lines of code for developing and testing things
+
 require 'usb'
 require 'pp'
  

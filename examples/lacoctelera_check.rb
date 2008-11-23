@@ -1,3 +1,8 @@
+# blat 2008-11-23
+# Check the state of La Coctelera and change
+# head colour to green if its ok
+# or red in other case
+
 require 'rubygems'
 require 'curb'
 require 'rubi-buddy'
