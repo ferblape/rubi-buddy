@@ -1,8 +1,12 @@
 # RubiBuddy
 
+<https://github.com/ferblape/rubi-buddy>
+
 A small Ruby class for accessing the [i-Buddy](http://www.i-buddy.com/)'s functionality with Ruby.
 
 See ''examples/'' folder.
+
+Work still in progress.
 
 ## Requirements
 
@@ -18,7 +22,7 @@ See ''examples/'' folder.
 
 ## Special Thanks
 
-  - http://cuntography.com/blog/?p=17
+  - <http://cuntography.com/blog/?p=17>
   - Luis Peralta and Jose Carlos Luna for their Python Library [pybuddy](http://code.google.com/p/pybuddy/)
 
 Copyright (c) 2008 [Fernando Blat](http://www.inwebwetrust.net), released under the MIT license
