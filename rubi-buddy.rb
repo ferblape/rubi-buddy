@@ -80,15 +80,16 @@ class RubiBuddy
   rescue
   end
   
-  # TODO  
-  def flaps
-    # bits = [0x08, 0x04]
-    # 1.upto(times) do |i|
-    #   index  = i%2
-    #   send(0xFF ^ (bits[1]))
-    # end
-    # send(RESET ^ (bits[0] | bits[1]))
-    # send(RESET ^ (bits[1] | bits[0]))
+  # Move flaps up and down
+  def flaps(times = 5)
+    bits = [0x08, 0x04]
+    1.upto(times) do |i|
+      begin
+        send(RESET ^ (bits[i%2]))
+      rescue
+      end
+      sleep 0.4
+    end    
   end
   
   # Makes the i-Buddy turn left or right. The sleep is necessary because
